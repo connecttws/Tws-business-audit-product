@@ -365,31 +365,31 @@ export function FormBuilder({ initialData, isEditMode = false }: FormBuilderProp
     <div className="min-h-screen flex flex-col bg-[#f1f5f9] text-slate-900 font-sans">
       {/* Top Builder Nav */}
       <header className="relative sm:sticky sm:top-0 z-30 border-b border-slate-200/90 bg-white/95 backdrop-blur-md">
-        <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3 min-w-0">
+        <div className="max-w-6xl mx-auto px-3 sm:px-4 h-14 sm:h-16 flex items-center justify-between gap-2.5 sm:gap-4">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
             <Link
               href="/dashboard"
-              className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors shrink-0"
+              className="p-1.5 sm:p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors shrink-0"
               title="Back to Dashboard"
             >
-              <ArrowLeft className="w-5 h-5" />
+              <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
             </Link>
 
-            <div className="min-w-0">
+            <div className="min-w-0 flex-1">
               <input
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Audit Form Title..."
-                className="bg-transparent font-black text-base sm:text-lg text-slate-950 border-b border-transparent hover:border-slate-300 focus:border-sky-500 focus:outline-none px-1 py-0.5 rounded transition-all w-full truncate"
+                className="bg-transparent font-black text-sm sm:text-lg text-slate-950 border-b border-transparent hover:border-slate-300 focus:border-sky-500 focus:outline-none px-1 py-0.5 rounded transition-all w-full truncate"
               />
-              <p className="text-[11px] font-mono text-slate-500 truncate">
+              <p className="text-[10px] sm:text-[11px] font-mono text-slate-500 truncate">
                 Public URL: <span className="text-sky-600 font-semibold">/audit/{generatedSlug}</span>
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3 shrink-0">
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             {/* Live Max Score Counter & Balance Status */}
             {totalMaxScore === 100 ? (
               <button
@@ -417,59 +417,63 @@ export function FormBuilder({ initialData, isEditMode = false }: FormBuilderProp
             <button
               onClick={handleSave}
               disabled={saving}
-              className="px-4 sm:px-5 py-2.5 rounded-xl bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white font-bold text-xs flex items-center gap-2 shadow-md shadow-sky-600/25 transition-all hover:scale-[1.02] disabled:opacity-50"
+              className="px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white font-bold text-xs flex items-center gap-1.5 sm:gap-2 shadow-md shadow-sky-600/25 transition-all hover:scale-[1.02] disabled:opacity-50 cursor-pointer"
             >
               {saving ? (
                 <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <Loader2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 animate-spin" />
                   <span>Saving...</span>
                 </>
               ) : (
                 <>
-                  <Save className="w-4 h-4" />
-                  <span>{isEditMode ? "Save Changes" : "Save & Publish"}</span>
+                  <Save className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  <span className="hidden sm:inline">{isEditMode ? "Save Changes" : "Save & Publish"}</span>
+                  <span className="sm:hidden font-bold">{isEditMode ? "Save" : "Publish"}</span>
                 </>
               )}
             </button>
           </div>
         </div>
 
-        {/* Tab Navigation */}
-        <div className="max-w-6xl mx-auto px-4 flex items-center gap-2 border-t border-slate-200/80">
+        {/* Tab Navigation: Smooth horizontal scrollable on mobile */}
+        <div className="max-w-6xl mx-auto px-3 sm:px-4 flex items-center gap-1 sm:gap-2 border-t border-slate-200/80 overflow-x-auto scrollbar-none">
           <button
             onClick={() => setActiveTab("questions")}
-            className={`px-4 py-2.5 text-xs font-bold border-b-2 transition-all flex items-center gap-2 ${
+            className={`px-3 sm:px-4 py-2.5 text-xs font-bold border-b-2 transition-all flex items-center gap-1.5 sm:gap-2 shrink-0 whitespace-nowrap cursor-pointer ${
               activeTab === "questions"
                 ? "border-sky-600 text-sky-600"
                 : "border-transparent text-slate-500 hover:text-slate-900"
             }`}
           >
-            <Layers className="w-4 h-4" />
-            <span>Questions ({questions.length}) · Pillars ({sections.length})</span>
+            <Layers className="w-4 h-4 shrink-0" />
+            <span className="hidden sm:inline">Questions ({questions.length}) · Pillars ({sections.length})</span>
+            <span className="sm:hidden">Questions ({questions.length}) · Pillars</span>
           </button>
 
           <button
             onClick={() => setActiveTab("bands")}
-            className={`px-4 py-2.5 text-xs font-bold border-b-2 transition-all flex items-center gap-2 ${
+            className={`px-3 sm:px-4 py-2.5 text-xs font-bold border-b-2 transition-all flex items-center gap-1.5 sm:gap-2 shrink-0 whitespace-nowrap cursor-pointer ${
               activeTab === "bands"
                 ? "border-sky-600 text-sky-600"
                 : "border-transparent text-slate-500 hover:text-slate-900"
             }`}
           >
-            <Sliders className="w-4 h-4" />
-            <span>Score Bands & Diagnosis ({scoreBands.length})</span>
+            <Sliders className="w-4 h-4 shrink-0" />
+            <span className="hidden sm:inline">Score Bands & Diagnosis ({scoreBands.length})</span>
+            <span className="sm:hidden">Score Bands ({scoreBands.length})</span>
           </button>
 
           <button
             onClick={() => setActiveTab("settings")}
-            className={`px-4 py-2.5 text-xs font-bold border-b-2 transition-all flex items-center gap-2 ${
+            className={`px-3 sm:px-4 py-2.5 text-xs font-bold border-b-2 transition-all flex items-center gap-1.5 sm:gap-2 shrink-0 whitespace-nowrap cursor-pointer ${
               activeTab === "settings"
                 ? "border-sky-600 text-sky-600"
                 : "border-transparent text-slate-500 hover:text-slate-900"
             }`}
           >
-            <Settings className="w-4 h-4" />
-            <span>Form Settings & CTA</span>
+            <Settings className="w-4 h-4 shrink-0" />
+            <span className="hidden sm:inline">Form Settings & CTA</span>
+            <span className="sm:hidden">Settings & CTA</span>
           </button>
         </div>
       </header>

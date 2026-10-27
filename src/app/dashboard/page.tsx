@@ -168,46 +168,56 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen flex flex-col bg-[#f1f5f9] text-slate-900 font-sans">
       {/* Top Navbar */}
-      <header className="border-b border-slate-200/90 bg-white/95 backdrop-blur-md">
-        <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Link href="/dashboard" className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-sky-500 to-blue-600 p-[1px] shadow-sm">
+      <header className="border-b border-slate-200/90 bg-white/95 backdrop-blur-md sticky top-0 z-30">
+        <div className="max-w-6xl mx-auto px-3 sm:px-4 h-14 sm:h-16 flex items-center justify-between gap-3">
+          {/* Left: Branding */}
+          <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
+            <Link href="/dashboard" className="flex items-center gap-2 sm:gap-2.5">
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-tr from-sky-500 to-blue-600 p-[1px] shadow-sm">
                 <div className="w-full h-full bg-white rounded-[11px] flex items-center justify-center">
                   <span className="font-black text-xs text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-blue-600">
                     TWS
                   </span>
                 </div>
               </div>
-              <span className="font-extrabold text-sm tracking-tight text-slate-900 hidden sm:inline">
-                Audit Product
-              </span>
+              <div className="flex items-center gap-1.5">
+                <span className="font-extrabold text-xs sm:text-sm tracking-tight text-slate-900">
+                  Audit Product
+                </span>
+                <span className="hidden md:inline-block text-[9px] uppercase font-bold tracking-wider text-sky-700 bg-sky-50 px-1.5 py-0.5 rounded-full border border-sky-200">
+                  Pro
+                </span>
+              </div>
             </Link>
           </div>
 
-          <div className="flex items-center gap-2">
+          {/* Center (Desktop only): Navigation Tabs */}
+          <div className="hidden sm:flex items-center gap-1.5 bg-slate-100/90 p-1 rounded-xl border border-slate-200/80">
             <Link
               href="/dashboard"
-              className="px-3.5 py-1.5 rounded-xl bg-sky-600 text-white text-xs font-bold shadow-sm shadow-sky-600/30"
+              className="px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 bg-white text-sky-700 shadow-xs"
             >
-              My Forms
+              <FileText className="w-3.5 h-3.5" />
+              <span>My Forms ({forms.length})</span>
             </Link>
             <Link
               href="/dashboard/submissions"
-              className="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-xs font-semibold text-slate-700 transition-colors"
+              className="px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-600 hover:text-slate-900"
             >
-              Submissions CRM
+              <Users className="w-3.5 h-3.5" />
+              <span>Submissions CRM</span>
             </Link>
           </div>
 
-          <div className="flex items-center gap-4">
+          {/* Right: User Profile & Logout */}
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <div className="flex items-center gap-2 text-right">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-sky-600 to-blue-600 flex items-center justify-center font-bold text-xs text-white uppercase shadow-sm">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-tr from-sky-600 to-blue-600 flex items-center justify-center font-bold text-[11px] sm:text-xs text-white uppercase shadow-sm">
                 {user?.name ? user.name.slice(0, 2) : "US"}
               </div>
-              <div className="hidden sm:block text-left">
-                <p className="text-xs font-bold text-slate-900 leading-tight">{user?.name}</p>
-                <p className="text-[10px] text-slate-500 leading-tight">
+              <div className="hidden md:block text-left">
+                <p className="text-xs font-bold text-slate-900 leading-tight truncate max-w-[120px]">{user?.name}</p>
+                <p className="text-[10px] text-slate-500 leading-tight truncate max-w-[120px]">
                   {user?.companyName || user?.email}
                 </p>
               </div>
@@ -215,11 +225,31 @@ export default function DashboardPage() {
 
             <button
               onClick={handleLogout}
-              className="p-2 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors"
+              className="p-1.5 sm:p-2 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
               title="Sign Out"
             >
               <LogOut className="w-4 h-4" />
             </button>
+          </div>
+        </div>
+
+        {/* Mobile-only Segmented Navigation Bar */}
+        <div className="sm:hidden px-3 pb-2.5 pt-0.5">
+          <div className="grid grid-cols-2 gap-1 p-1 bg-slate-100/90 rounded-xl border border-slate-200/80">
+            <Link
+              href="/dashboard"
+              className="flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-bold transition-all bg-white text-sky-700 shadow-xs"
+            >
+              <FileText className="w-3.5 h-3.5" />
+              <span>My Forms ({forms.length})</span>
+            </Link>
+            <Link
+              href="/dashboard/submissions"
+              className="flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900"
+            >
+              <Users className="w-3.5 h-3.5" />
+              <span>Submissions CRM</span>
+            </Link>
           </div>
         </div>
       </header>

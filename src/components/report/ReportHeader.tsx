@@ -48,21 +48,21 @@ export function ReportHeader({ businessName, companyName, auditId }: ReportHeade
 
   return (
     <header className="relative sm:sticky sm:top-0 z-30 bg-white/95 text-slate-900 border-b border-slate-200/90 shadow-xs backdrop-blur-md no-print">
-      <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between gap-3">
-        <div className="flex items-center gap-3 min-w-0">
+      <div className="max-w-4xl mx-auto px-3 sm:px-4 h-14 sm:h-16 flex items-center justify-between gap-2.5 sm:gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
           <Link
             href="/dashboard"
-            className="p-1.5 rounded-xl hover:bg-slate-100 text-slate-500 hover:text-slate-900 transition-colors"
-            title="Back"
+            className="p-1.5 rounded-xl hover:bg-slate-100 text-slate-500 hover:text-slate-900 transition-colors shrink-0"
+            title="Back to Dashboard"
           >
-            <ArrowLeft className="w-5 h-5" />
+            <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
           </Link>
 
-          <div className="flex items-center gap-2.5 min-w-0">
-            <div className="w-8 h-8 rounded-xl bg-slate-950 flex items-center justify-center font-black text-white text-xs tracking-wider shadow-sm shrink-0">
+          <div className="flex items-center gap-2 sm:gap-2.5 min-w-0 flex-1">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-slate-950 flex items-center justify-center font-black text-white text-[11px] sm:text-xs tracking-wider shadow-sm shrink-0">
               TWS
             </div>
-            <div className="min-w-0 truncate">
+            <div className="min-w-0 flex-1">
               <div className="flex items-center gap-1.5 truncate">
                 <span className="font-extrabold text-xs sm:text-sm tracking-tight text-slate-900 truncate">
                   {businessName}
@@ -110,7 +110,7 @@ export function ReportHeader({ businessName, companyName, auditId }: ReportHeade
           <button
             type="button"
             onClick={handleShareWhatsApp}
-            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold bg-[#25D366] hover:bg-[#20ba5a] text-slate-950 transition-colors shadow-xs cursor-pointer"
+            className="flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-xl text-xs font-bold bg-[#25D366] hover:bg-[#20ba5a] text-slate-950 transition-colors shadow-xs cursor-pointer shrink-0"
           >
             <MessageSquare className="w-3.5 h-3.5 fill-slate-950" />
             <span>WhatsApp</span>

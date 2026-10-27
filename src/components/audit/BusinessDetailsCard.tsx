@@ -52,23 +52,23 @@ export function BusinessDetailsCard({
   const selectedCat = business.category || defaultCategory || "Cafe / Restaurant";
 
   return (
-    <section className="bg-white rounded-3xl p-5 sm:p-8 border-2 border-slate-300 shadow-[0_6px_24px_rgba(15,23,42,0.08)] space-y-6">
+    <section className="bg-white rounded-3xl p-4 sm:p-8 border-2 border-slate-300 shadow-[0_6px_24px_rgba(15,23,42,0.08)] space-y-6">
       {/* Step Header */}
-      <div className="flex items-start justify-between gap-3 border-b-2 border-slate-100 pb-4">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-sky-600 text-white shadow-md flex items-center justify-center font-bold text-sm shrink-0">
-            <Building className="w-5 h-5" />
+      <div className="flex items-center justify-between gap-2.5 border-b-2 border-slate-100 pb-3 sm:pb-4">
+        <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl bg-sky-600 text-white shadow-md flex items-center justify-center font-bold text-sm shrink-0">
+            <Building className="w-4 h-4 sm:w-5 sm:h-5" />
           </div>
-          <div>
-            <span className="text-[11px] font-mono font-black uppercase tracking-wider text-sky-800 block">
+          <div className="min-w-0 flex-1">
+            <span className="text-[10px] sm:text-[11px] font-mono font-black uppercase tracking-wider text-sky-800 block">
               Diagnostic Step 01
             </span>
-            <h2 className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight leading-tight font-sans">
+            <h2 className="text-lg sm:text-2xl font-black text-slate-950 tracking-tight leading-tight font-sans truncate">
               Business Information
             </h2>
           </div>
         </div>
-        <span className="text-xs font-mono font-bold text-white bg-slate-900 px-3 py-1 rounded-xl shrink-0 shadow-xs">
+        <span className="text-[11px] sm:text-xs font-mono font-bold text-white bg-slate-900 px-2.5 sm:px-3 py-1 rounded-xl shrink-0 shadow-xs">
           Step 1 of 2
         </span>
       </div>

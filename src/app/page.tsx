@@ -39,9 +39,9 @@ export default function HomePage() {
 
       {/* Top Navbar */}
       <header className="relative z-10 w-full border-b border-slate-200/90 bg-white/95 backdrop-blur-md">
-        <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-sky-500 to-blue-600 p-[1px] shadow-sm">
+        <div className="max-w-6xl mx-auto px-3 sm:px-4 h-14 sm:h-16 flex items-center justify-between gap-2.5 sm:gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-tr from-sky-500 to-blue-600 p-[1px] shadow-sm">
               <div className="w-full h-full bg-white rounded-[11px] flex items-center justify-center">
                 <span className="font-black text-xs text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-blue-600">
                   TWS
@@ -49,37 +49,39 @@ export default function HomePage() {
               </div>
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="font-extrabold text-sm tracking-tight text-slate-900">
+              <span className="font-extrabold text-xs sm:text-sm tracking-tight text-slate-900">
                 Business Audit
               </span>
-              <span className="text-[10px] uppercase font-bold tracking-widest text-sky-700 bg-sky-50 px-2 py-0.5 rounded-full border border-sky-200">
+              <span className="hidden sm:inline-block text-[10px] uppercase font-bold tracking-widest text-sky-700 bg-sky-50 px-2 py-0.5 rounded-full border border-sky-200">
                 Pro
               </span>
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             {!loading && user ? (
               <Link
                 href="/dashboard"
-                className="px-4 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-semibold text-xs flex items-center gap-2 transition-all shadow-sm shadow-sky-600/30"
+                className="px-3 sm:px-4 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-semibold text-xs flex items-center gap-1.5 sm:gap-2 transition-all shadow-sm shadow-sky-600/30"
               >
-                Go to Dashboard
+                <span className="hidden sm:inline">Go to Dashboard</span>
+                <span className="sm:hidden font-bold">Dashboard</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             ) : (
               <>
                 <Link
                   href="/login"
-                  className="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-950 transition-colors"
+                  className="px-2.5 sm:px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-950 transition-colors"
                 >
                   Sign In
                 </Link>
                 <Link
                   href="/register"
-                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white font-semibold text-xs flex items-center gap-1.5 transition-all shadow-sm shadow-sky-600/25"
+                  className="px-3 sm:px-4 py-2 rounded-xl bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white font-semibold text-xs flex items-center gap-1.5 transition-all shadow-sm shadow-sky-600/25"
                 >
-                  Get Started
+                  <span className="hidden sm:inline">Get Started</span>
+                  <span className="sm:hidden font-bold">Start</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </>
