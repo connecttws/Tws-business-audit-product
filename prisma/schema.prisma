@@ -1,0 +1,122 @@
+// Prisma Schema for TWS Business Audit Product (SaaS Platform)
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+  schemas   = ["tws_audit_saas"]
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
+}
+
+// 1. User Account (Agency Owner, Consultant, or Auditor)
+model User {
+  id            String          @id @default(cuid())
+  email         String          @unique @db.VarChar(255)
+  passwordHash  String          @map("password_hash") @db.VarChar(255)
+  name          String          @db.VarChar(150)
+  companyName   String?         @map("company_name") @db.VarChar(200)
+  role          String          @default("client") @db.VarChar(50) // "client", "admin", "auditor"
+  avatarUrl     String?         @map("avatar_url") @db.Text
+
+  // Relationships
+  forms         AuditForm[]
+  audits        BusinessAudit[]
+
+  createdAt     DateTime        @default(now()) @map("created_at")
+  updatedAt     DateTime        @updatedAt @map("updated_at")
+
+  @@map("users")
+  @@schema("tws_audit_saas")
+  @@index([email])
+}
+
+// 2. Dynamic Audit Form / Questionnaire Template
+model AuditForm {
+  id              String          @id @default(cuid())
+  userId          String          @map("user_id")
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  title           String          @db.VarChar(255)
+  slug            String          @unique @db.VarChar(150)
+  description     String?         @db.Text
+  category        String          @default("Universal") @db.VarChar(100)
+  themeColor      String          @default("indigo") @map("theme_color") @db.VarChar(50)
+  isPublished     Boolean         @default(true) @map("is_published")
+
+  // Dynamic Structure Payloads (JSONB)
+  sections        Json            // Array of Pillars / Sections [{ id, name, icon, maxPoints }]
+  questions       Json            // Array of Questions [{ id, sectionId, text, description, options: [{ text, points, hint }] }]
+  scoreBands      Json            @map("score_bands") // Custom Score Thresholds & Diagnosis [{ min, max, title, headline, sprintRecommendation }]
+  settings        Json?           // Custom WhatsApp notification template, agency branding
+
+  totalMaxScore   Int             @default(100) @map("total_max_score")
+  viewsCount      Int             @default(0) @map("views_count")
+  submissionCount Int             @default(0) @map("submission_count")
+
+  audits          BusinessAudit[]
+
+  createdAt       DateTime        @default(now()) @map("created_at")
+  updatedAt       DateTime        @updatedAt @map("updated_at")
+
+  @@map("audit_forms")
+  @@schema("tws_audit_saas")
+  @@index([userId])
+  @@index([slug])
+  @@index([createdAt])
+}
+
+// 3. Business Audit Submission / Audited Lead Record
+model BusinessAudit {
+  id              String          @id @default(cuid())
+  formId          String          @map("form_id")
+  form            AuditForm       @relation(fields: [formId], references: [id], onDelete: Cascade)
+  userId          String          @map("user_id")
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  slug            String?         @unique @db.VarChar(150)
+
+  // Business & Client Profile
+  businessName    String          @map("business_name") @db.VarChar(255)
+  clientName      String?         @map("client_name") @db.VarChar(150)
+  category        String          @db.VarChar(100)
+  locality        String          @db.VarChar(255)
+  phone           String?         @db.VarChar(50)
+  whatsappNumber  String?         @map("whatsapp_number") @db.VarChar(50)
+  mapsUrl         String?         @map("maps_url") @db.Text
+  auditorName     String?         @default("Self Audit") @map("auditor_name") @db.VarChar(150)
+
+  // Overall Score & Diagnostic Status
+  totalScore      Int             @map("total_score")
+  maxScore        Int             @default(100) @map("max_score")
+  percentage      Int             @default(0)
+  bandTitle       String          @map("band_title") @db.VarChar(100)
+  bandHeadline    String          @map("band_headline") @db.Text
+  sprintDetails   String?         @map("sprint_details") @db.Text
+
+  // Payloads & Snapshots
+  sectionScores   Json            @map("section_scores")
+  answers         Json            // Map of questionId -> chosenOptionIndex
+  findings        Json            // Detailed list of points awarded, missed hints, advice
+  formSnapshot    Json?           // Full snapshot of form questions/sections at submission time
+
+  // Engagement & CRM Status
+  status          String          @default("new") @db.VarChar(50) // "new", "in_discussion", "converted", "archived"
+  viewCount       Int             @default(0) @map("view_count")
+  lastViewedAt    DateTime?       @map("last_viewed_at")
+  sharedViaWhatsAppAt DateTime?   @map("shared_via_whatsapp_at")
+
+  createdAt       DateTime        @default(now()) @map("created_at")
+  updatedAt       DateTime        @updatedAt @map("updated_at")
+
+  @@map("business_audits")
+  @@schema("tws_audit_saas")
+  @@index([userId])
+  @@index([formId])
+  @@index([businessName])
+  @@index([whatsappNumber])
+  @@index([totalScore])
+  @@index([createdAt])
+}
