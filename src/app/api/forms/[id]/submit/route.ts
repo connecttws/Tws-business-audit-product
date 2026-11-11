@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { evaluateDynamicAudit, BusinessDetails } from "@/lib/audit-evaluator";
+import { evaluateDynamicAudit } from "@/lib/audit-evaluator";
 
 export async function POST(
   req: NextRequest,
@@ -10,21 +10,23 @@ export async function POST(
     const { id } = await params;
     const body = await req.json();
 
-    const { business, answers } = body as {
-      business: BusinessDetails;
-      answers: Record<string, number>;
-    };
+    const nested = body.business || {};
+    const clientName = (body.clientName || nested.clientName || body.name || nested.name || "").trim();
+    const locality = (body.locality || nested.locality || "").trim();
+    const phone = (body.phone || nested.phone || body.whatsappNumber || nested.whatsappNumber || "").trim();
+    const whatsappNumber = (body.whatsappNumber || nested.whatsappNumber || phone || "").trim();
+    const answers = body.answers || {};
 
-    if (!business?.name?.trim()) {
+    if (!clientName) {
       return NextResponse.json(
-        { success: false, error: "Business name is required" },
+        { success: false, error: "Full Name is required in Step 01." },
         { status: 400 }
       );
     }
 
-    if (!business?.locality?.trim()) {
+    if (!locality) {
       return NextResponse.json(
-        { success: false, error: "Locality / City is required" },
+        { success: false, error: "City / Locality is required in Step 01." },
         { status: 400 }
       );
     }
@@ -61,20 +63,31 @@ export async function POST(
       answers || {}
     );
 
+    const formSettings = (form.settings as any) || {};
+    const issuingBusinessName = (
+      body.businessName ||
+      nested.businessName ||
+      formSettings.companyName ||
+      form.title ||
+      clientName
+    ).trim();
+
+    const category = form.category || body.category || nested.category || "Client Audit";
+
     // Save submission to database
     const saved = await prisma.businessAudit.create({
       data: {
         formId: form.id,
         userId: form.userId,
         slug: null,
-        businessName: business.name.trim(),
-        clientName: business.clientName?.trim() || null,
-        category: business.category || form.category || "Universal",
-        locality: business.locality.trim(),
-        phone: business.phone?.trim() || null,
-        whatsappNumber: business.whatsappNumber?.trim() || business.phone?.trim() || null,
-        mapsUrl: business.mapsUrl?.trim() || null,
-        auditorName: business.auditorName?.trim() || "Online Audit",
+        businessName: issuingBusinessName,
+        clientName: clientName,
+        category: category,
+        locality: locality,
+        phone: phone || null,
+        whatsappNumber: whatsappNumber || null,
+        mapsUrl: body.mapsUrl || nested.mapsUrl || null,
+        auditorName: formSettings.companyName || "Client Self-Assessment",
 
         totalScore: evaluated.totalScore,
         maxScore: evaluated.maxScore,
@@ -114,6 +127,11 @@ export async function POST(
       success: true,
       auditId: saved.id,
       reportUrl,
+      totalScore: evaluated.totalScore,
+      maxScore: evaluated.maxScore,
+      percentage: evaluated.percentage,
+      bandTitle: evaluated.band.title,
+      bandHeadline: evaluated.band.headline,
       evaluated,
     });
   } catch (error: any) {

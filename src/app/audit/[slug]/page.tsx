@@ -115,13 +115,20 @@ export default function PublicAuditPage() {
     setSubmitError(null);
 
     // 1. Validation
-    if (!business.name.trim()) {
-      setSubmitError("Please fill in your Business Name in Step 01.");
+    const clientName = (business.clientName || business.name || "").trim();
+    if (!clientName) {
+      setSubmitError("Please fill in your Full Name in Step 01.");
       window.scrollTo({ top: 100, behavior: "smooth" });
       return;
     }
+    const phone = (business.whatsappNumber || business.phone || "").trim();
+    if (!phone) {
+      setSubmitError("Please enter your WhatsApp / Contact Number in Step 01.");
+      window.scrollTo({ top: 120, behavior: "smooth" });
+      return;
+    }
     if (!business.locality.trim()) {
-      setSubmitError("Please enter your Locality / City in Step 01.");
+      setSubmitError("Please enter your City / Locality in Step 01.");
       window.scrollTo({ top: 150, behavior: "smooth" });
       return;
     }
@@ -137,14 +144,25 @@ export default function PublicAuditPage() {
     try {
       if (!form?.id) throw new Error("Missing form identifier");
 
+      const companyTitle = form.settings?.companyName || form.title || clientName;
+
       const payload = {
-        businessName: business.name.trim(),
-        clientName: business.clientName?.trim() || undefined,
-        category: business.category,
+        clientName,
+        businessName: companyTitle,
+        category: form.category || "Client Audit",
         locality: business.locality.trim(),
-        phone: business.phone?.trim() || undefined,
-        whatsappNumber: business.whatsappNumber?.trim() || business.phone?.trim() || undefined,
+        phone,
+        whatsappNumber: phone,
         answers,
+        business: {
+          clientName,
+          name: clientName,
+          businessName: companyTitle,
+          category: form.category || "Client Audit",
+          locality: business.locality.trim(),
+          phone,
+          whatsappNumber: phone,
+        },
       };
 
       const res = await fetch(`/api/forms/${form.id}/submit`, {
@@ -162,10 +180,10 @@ export default function PublicAuditPage() {
       setCompletedData({
         auditId: data.auditId,
         reportUrl: data.reportUrl || `/r/${data.auditId}`,
-        totalScore: data.totalScore,
-        maxScore: data.maxScore,
-        bandTitle: data.bandTitle,
-        bandHeadline: data.bandHeadline,
+        totalScore: Number(data.totalScore ?? data.evaluated?.totalScore ?? liveEvaluation.totalScore ?? 0),
+        maxScore: Number(data.maxScore ?? data.evaluated?.maxScore ?? liveEvaluation.maxScore ?? 100),
+        bandTitle: data.bandTitle || data.evaluated?.band?.title || (liveEvaluation as any).band?.title || "Evaluated",
+        bandHeadline: data.bandHeadline || data.evaluated?.band?.headline || (liveEvaluation as any).band?.headline || "",
       });
 
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -235,7 +253,7 @@ export default function PublicAuditPage() {
             <div className="text-center space-y-2 mb-4">
               <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-sky-100 border border-sky-300 text-sky-800 text-xs font-bold shadow-xs">
                 <Sparkles className="w-3.5 h-3.5 text-sky-600" />
-                <span>Confidential Business Presence Diagnostic</span>
+                <span>Client Digital Diagnostic Platform</span>
               </div>
               <h1 className="text-3xl sm:text-4xl font-black text-slate-950 tracking-tight font-sans">
                 {form.title}
@@ -324,7 +342,8 @@ export default function PublicAuditPage() {
           <AuditSubmittedModal
             auditId={completedData.auditId}
             reportUrl={completedData.reportUrl}
-            businessName={business.name}
+            businessName={form?.settings?.companyName || form?.title || business.clientName || business.name || "Client"}
+            clientName={business.clientName || business.name}
             totalScore={completedData.totalScore}
             maxScore={completedData.maxScore}
             bandTitle={completedData.bandTitle}

@@ -45,10 +45,14 @@ export function ReportWhatsAppCta({
 
   // Formatted WhatsApp Message
   const generateMessage = () => {
-    let msg = `*TWS Business Digital Diagnostic*\n\n`;
-    msg += `*Business:* ${businessName}${clientName ? ` (Contact: ${clientName})` : ""}\n`;
+    const displayName = clientName || businessName;
+    let msg = `*Client Digital Diagnostic Assessment*\n\n`;
+    msg += `*Client:* ${displayName}\n`;
+    if (businessName && businessName !== clientName) {
+      msg += `*Organization:* ${businessName}\n`;
+    }
     msg += `*Locality:* ${locality} (${category})\n`;
-    msg += `*Digital Health Score:* ${totalScore} / ${maxScore} (${percentage}%) — ${bandTitle}\n`;
+    msg += `*Digital Assessment Score:* ${totalScore} / ${maxScore} (${percentage}%) — ${bandTitle}\n`;
     msg += `*Diagnosis:* ${bandHeadline}\n\n`;
 
     if (sectionScores && sectionScores.length > 0) {
@@ -60,7 +64,7 @@ export function ReportWhatsAppCta({
     }
 
     msg += `*View Complete Online Diagnostic Report:*\n${reportUrl}\n\n`;
-    msg += `_Prepared via TWS Business Audit Suite._`;
+    msg += `_Generated via Client Digital Diagnostic Platform._`;
     return msg;
   };
 

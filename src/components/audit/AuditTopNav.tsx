@@ -54,12 +54,12 @@ export function AuditTopNav({
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-1.5 truncate">
               <span className="font-extrabold text-xs sm:text-sm tracking-tight text-white block truncate">
-                {formTitle || "Business Digital Diagnostic"}
+                {formTitle || "Client Digital Diagnostic"}
               </span>
               <span className="hidden sm:inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
             </div>
             <p className="text-[10px] sm:text-[11px] text-slate-400 font-medium truncate">
-              {companyName ? `Diagnostic by ${companyName}` : "Official Digital Presence Audit"}
+              {companyName ? `Diagnostic by ${companyName}` : "Official Client Diagnostic Platform"}
             </p>
           </div>
         </div>

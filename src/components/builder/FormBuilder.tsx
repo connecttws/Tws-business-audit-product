@@ -46,10 +46,10 @@ const AVAILABLE_ICONS = ["MapPin", "Camera", "Globe", "Target", "Zap", "Sparkles
 export function FormBuilder({ initialData, isEditMode = false }: FormBuilderProps) {
   const router = useRouter();
 
-  const [title, setTitle] = useState(initialData?.title || "Custom Business Digital Diagnostic");
+  const [title, setTitle] = useState(initialData?.title || "Client Digital Platform Diagnostic");
   const [slug, setSlug] = useState(initialData?.slug || "");
   const [description, setDescription] = useState(
-    initialData?.description || "Comprehensive multi-pillar diagnostic audit assessing digital maturity and revenue gaps."
+    initialData?.description || "Comprehensive multi-pillar diagnostic audit assessing client digital readiness, habits, and growth opportunities."
   );
   const [category, setCategory] = useState(initialData?.category || "Universal");
   const [themeColor, setThemeColor] = useState(initialData?.themeColor || "sky");
@@ -1078,7 +1078,7 @@ export function FormBuilder({ initialData, isEditMode = false }: FormBuilderProp
             <div>
               <h3 className="font-black text-slate-950 text-base">Form Branding & WhatsApp CTA</h3>
               <p className="text-xs text-slate-500 mt-0.5">
-                Customize how your agency appears on final diagnostic reports.
+                Customize how your business appears on final client diagnostic reports.
               </p>
             </div>
 
@@ -1101,33 +1101,39 @@ export function FormBuilder({ initialData, isEditMode = false }: FormBuilderProp
 
               <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                  Business Category Focus
+                  Diagnostic Category Preset
                 </label>
                 <input
                   type="text"
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  placeholder="Universal / Cafe / Clinic / Real Estate"
+                  placeholder="Fitness & Gym / Healthcare / Digital Platform / Universal"
                   className="w-full text-xs text-slate-900 bg-slate-50 border border-slate-200 px-3 py-2 rounded-xl focus:outline-none focus:border-sky-500"
                 />
+                <p className="text-[11px] text-slate-400 mt-1">
+                  Preset for this form. Your clients do not have to pick or change this.
+                </p>
               </div>
 
               <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                  Agency / Brand Name
+                  Your Business / Organization Name
                 </label>
                 <input
                   type="text"
                   value={settings.companyName || ""}
                   onChange={(e) => setSettings({ ...settings, companyName: e.target.value })}
-                  placeholder="Team TWS / Growth Studio"
+                  placeholder="e.g. Iron Core Gym / Smile Clinic / Team TWS"
                   className="w-full text-xs text-slate-900 bg-slate-50 border border-slate-200 px-3 py-2 rounded-xl focus:outline-none focus:border-sky-500"
                 />
+                <p className="text-[11px] text-slate-400 mt-1">
+                  Appears as the issuing business on your clients' diagnostic reports.
+                </p>
               </div>
 
               <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                  Agency WhatsApp Number (for Report Dispatch)
+                  Business WhatsApp Number (for Client Consultations)
                 </label>
                 <input
                   type="text"

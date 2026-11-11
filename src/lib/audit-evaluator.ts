@@ -1,9 +1,9 @@
 import { AuditFormData, SectionItem, QuestionItem, ScoreBandItem } from "@/types/form";
 
 export interface BusinessDetails {
-  name: string;
+  name?: string;
   clientName?: string;
-  category: string;
+  category?: string;
   locality: string;
   phone?: string;
   whatsappNumber?: string;

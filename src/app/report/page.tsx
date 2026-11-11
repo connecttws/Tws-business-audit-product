@@ -80,7 +80,7 @@ function ReportViewer() {
     <div className="min-h-screen flex flex-col bg-[#f1f5f9] text-slate-900 font-sans">
       {/* Sticky Header with Share & Print */}
       <ReportHeader
-        businessName={audit.businessName}
+        businessName={audit.clientName || audit.businessName}
         companyName={audit.agencySettings?.companyName || "Team TWS"}
         auditId={audit.id}
       />
@@ -99,6 +99,7 @@ function ReportViewer() {
           bandHeadline={audit.bandHeadline}
           sprintDetails={audit.sprintDetails}
           createdAt={audit.createdAt}
+          formTitle={audit.formSnapshot?.title || audit.form?.title}
         />
 
         {/* 2. Five Pillar Diagnostic Breakdown */}

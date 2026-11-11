@@ -397,11 +397,12 @@ export default function SubmissionsCrmPage() {
         ) : (
           <div className="grid grid-cols-1 gap-4">
             {filtered.map((item) => {
+              const displayName = item.clientName || item.businessName;
               const phone = item.whatsappNumber || item.phone;
               const cleanPhone = phone ? phone.replace(/[^0-9]/g, "") : "";
               const waUrl = cleanPhone
                 ? `https://wa.me/${cleanPhone.length === 10 ? `91${cleanPhone}` : cleanPhone}?text=${encodeURIComponent(
-                    `Hi ${item.clientName || item.businessName}, I reviewed your diagnostic audit for ${item.businessName} (Score: ${item.totalScore}/${item.maxScore} - ${item.bandTitle}). Let's discuss your action plan.`
+                    `Hi ${displayName}, I reviewed your diagnostic assessment for ${item.formTitle} (Score: ${item.totalScore}/${item.maxScore} - ${item.bandTitle}). Let's discuss your report.`
                   )}`
                 : null;
 
@@ -444,13 +445,19 @@ export default function SubmissionsCrmPage() {
                     </select>
                   </div>
 
-                  {/* Middle: Business Identity */}
+                  {/* Middle: Client Identity */}
                   <div>
-                    <h3 className="text-lg sm:text-xl font-black text-slate-950 tracking-tight leading-tight">
-                      {item.businessName}
+                    <h3 className="text-lg sm:text-xl font-black text-slate-950 tracking-tight leading-tight flex items-center gap-2">
+                      <span>{displayName}</span>
+                      <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-sky-50 text-sky-700 border border-sky-200">
+                        Client
+                      </span>
                     </h3>
                     <p className="text-xs text-slate-500 mt-0.5 font-medium">
                       via {item.formTitle}
+                      {item.businessName && item.businessName !== item.clientName && (
+                        <span> · {item.businessName}</span>
+                      )}
                     </p>
                   </div>
 
@@ -460,13 +467,6 @@ export default function SubmissionsCrmPage() {
                       <MapPin className="w-3.5 h-3.5 text-sky-600 shrink-0" />
                       <span>{item.locality || "Local Area"}</span>
                     </span>
-
-                    {item.clientName && (
-                      <span className="inline-flex items-center gap-1.5 text-xs text-slate-700 bg-slate-100 border border-slate-200 px-2.5 py-1 rounded-lg font-medium">
-                        <User className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-                        <span>{item.clientName}</span>
-                      </span>
-                    )}
 
                     {phone && (
                       <a

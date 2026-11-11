@@ -17,6 +17,7 @@ interface AuditSubmittedModalProps {
   auditId: string;
   reportUrl: string;
   businessName: string;
+  clientName?: string;
   totalScore: number;
   maxScore: number;
   bandTitle: string;
@@ -28,6 +29,7 @@ export function AuditSubmittedModal({
   auditId,
   reportUrl,
   businessName,
+  clientName,
   totalScore,
   maxScore,
   bandTitle,
@@ -51,7 +53,10 @@ export function AuditSubmittedModal({
     }
   };
 
-  const percentage = Math.round((totalScore / maxScore) * 100);
+  const safeTotalScore = Number(totalScore) || 0;
+  const safeMaxScore = Number(maxScore) > 0 ? Number(maxScore) : 100;
+  const percentage = Math.round((safeTotalScore / safeMaxScore) * 100);
+  const displayName = clientName || businessName || "You";
 
   return (
     <div className="bg-white max-w-xl w-full mx-auto p-7 sm:p-9 rounded-3xl border-2 border-slate-300 shadow-[0_12px_40px_rgba(15,23,42,0.1)] text-center space-y-6 animate-fadeIn">
@@ -66,10 +71,10 @@ export function AuditSubmittedModal({
           <span>Diagnostic Evaluation Generated</span>
         </div>
         <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-          Audit Complete for {businessName}
+          Diagnostic Complete!
         </h2>
         <p className="text-xs sm:text-sm text-slate-600 mt-1 max-w-md mx-auto">
-          Your responses have been processed and your official digital health diagnostic report is ready.
+          Your diagnostic evaluation for <strong className="text-slate-900 font-bold">{displayName}</strong> is processed and your official diagnostic report is ready.
         </p>
       </div>
 
@@ -81,9 +86,9 @@ export function AuditSubmittedModal({
           </span>
           <div className="flex items-baseline justify-center sm:justify-start gap-1.5 mt-0.5">
             <span className="text-4xl font-black text-sky-600 font-mono">
-              {totalScore}
+              {safeTotalScore}
             </span>
-            <span className="text-sm font-bold text-slate-400 font-mono">/ {maxScore}</span>
+            <span className="text-sm font-bold text-slate-400 font-mono">/ {safeMaxScore}</span>
             <span className="text-xs font-semibold text-slate-500 ml-1">({percentage}%)</span>
           </div>
         </div>

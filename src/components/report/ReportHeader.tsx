@@ -29,10 +29,10 @@ export function ReportHeader({ businessName, companyName, auditId }: ReportHeade
     const origin = typeof window !== "undefined" ? window.location.origin : "";
     const shortUrl = `${origin}/r/${auditId}`;
     const text =
-      `*${companyName || "Team TWS"} • Business Digital Diagnostic Report*\n` +
-      `*Business:* ${businessName}\n\n` +
+      `*${companyName || "Diagnostic Assessment"} • Client Diagnostic Report*\n` +
+      `*Client:* ${businessName}\n\n` +
       `View your complete diagnostic report: ${shortUrl}\n\n` +
-      `_Prepared by ${companyName || "Team TWS"}._`;
+      `_Issued by ${companyName || "Diagnostic Platform"}._`;
     window.open(
       `https://wa.me/?text=${encodeURIComponent(text)}`,
       "_blank",
@@ -69,7 +69,7 @@ export function ReportHeader({ businessName, companyName, auditId }: ReportHeade
                 </span>
                 <span className="hidden sm:inline-block w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
                 <span className="hidden sm:inline-block text-[11px] font-mono text-emerald-600 font-bold shrink-0">
-                  Verified Diagnostic
+                  Verified Client Diagnostic
                 </span>
               </div>
               <p className="text-[10px] text-slate-400 font-mono truncate">

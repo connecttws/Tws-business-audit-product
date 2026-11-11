@@ -102,7 +102,7 @@ export function ReportCover({
         <div className="flex flex-wrap items-center justify-between gap-3 text-xs border-b border-slate-800/80 pb-4">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-slate-700/80 text-slate-200 font-mono text-[11px] font-bold uppercase tracking-wider shadow-sm">
             <ShieldCheck className="w-4 h-4 text-emerald-400" />
-            <span>Official TWS Digital Audit</span>
+            <span>Official Client Diagnostic Assessment</span>
           </div>
 
           <div className="flex items-center gap-3 text-slate-400 text-xs font-mono">
@@ -129,15 +129,21 @@ export function ReportCover({
             {/* Title & Locality */}
             <div>
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white font-sans">
-                {businessName}
+                {clientName || businessName}
               </h1>
-              <p className="text-sm text-slate-400 mt-2 flex items-center gap-1.5 font-medium">
+              <p className="text-sm text-slate-400 mt-2 flex items-center gap-1.5 font-medium flex-wrap">
                 <MapPin className="w-4 h-4 text-sky-400 shrink-0" />
                 <span>{locality}</span>
-                {clientName && (
+                {formTitle && (
                   <>
                     <span className="text-slate-600">·</span>
-                    <span>Client: {clientName}</span>
+                    <span className="text-sky-300">Diagnostic: {formTitle}</span>
+                  </>
+                )}
+                {businessName && clientName && businessName !== clientName && (
+                  <>
+                    <span className="text-slate-600">·</span>
+                    <span>Conducted by: {businessName}</span>
                   </>
                 )}
               </p>
